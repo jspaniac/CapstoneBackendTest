@@ -9,5 +9,9 @@ CREDENTIALS_FILE = os.path.join(STORAGE_DIR, 'credentials.json')
 PARSED_JSON = os.path.join(STORAGE_DIR, "pages.json")
 
 # Sheets stuff
+ALT_CONTENT = {"Image"}
+DOWNLOADABLE = {"Video"}.union(ALT_CONTENT)
+VALID_CONTENT_TYPES = {"Text", "Title", "Subtitle"}.union(DOWNLOADABLE)
+
 SKIPPED_SHEETS = {"Languages", "Base"}
 MAX_ROWS = 1000
