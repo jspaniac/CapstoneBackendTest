@@ -23,7 +23,7 @@ def main():
 
     # Drive(creds).download_file(file_id=Drive.get_id_from_link(image_link))
     Sheets(creds).parse_to_json(Sheets.get_id_from_link(spreadsheet_link))
-    # Drive(creds).download_files()
+    Drive(creds).download_files()
 
 
 if __name__ == "__main__":

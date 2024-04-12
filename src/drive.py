@@ -1,5 +1,6 @@
 import io
 import os
+import json
 
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
@@ -46,7 +47,7 @@ class Drive:
         done = False
         while done is False:
             _, done = downloader.next_chunk()
-        
+
         return file.getvalue()
 
     def download_file(self, file_id, new_name=None):
@@ -67,3 +68,28 @@ class Drive:
         except HttpError as error:
             print(f"An error occurred: {error}")
             return False
+
+    def download_files(self):
+        #read json file
+        f = open('store/pages.json', 'r+')
+        data = json.load(f)
+
+        for i in range(len(data["pages"])):
+            page = data["pages"][i]
+            for j in range(len(page["content"])):
+                row = page["content"][j]
+                if row["content-type"] == "Image":
+                    # download each image
+                    for lang,link in row["content"].items():
+                        id = Drive.get_id_from_link(link)
+                        name = self.get_file_name(id)
+                        self.download_file(id, name)
+
+                        # change json content to match downloaded file name
+                        data["pages"][i]["content"][j]["content"][lang] = name
+
+        # rewrite json file
+        f.seek(0)
+        json.dump(data, f)
+        f.truncate()
+
