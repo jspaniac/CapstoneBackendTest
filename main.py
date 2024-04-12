@@ -22,10 +22,16 @@ def main():
 
     spreadsheet_link = "https://docs.google.com/spreadsheets/d/1tu5G4pl6Wn2uOx3CbrUiJHEZy2e_8F2bPn8Ry6HJYJ4/edit?usp=sharing"
 
+<<<<<<< HEAD
     Sheets(creds).parse_to_json(
         Drive(creds),
         Sheets.get_id_from_link(spreadsheet_link)
     )
+=======
+    # Drive(creds).download_file(file_id=Drive.get_id_from_link(image_link))
+    Sheets(creds).parse_to_json(Sheets.get_id_from_link(spreadsheet_link))
+    Drive(creds).download_files()
+>>>>>>> a8b656be42382ed453cdfecb75c409e0642a6cab
 
 
 if __name__ == "__main__":
