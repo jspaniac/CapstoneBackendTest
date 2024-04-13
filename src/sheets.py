@@ -51,7 +51,6 @@ class Sheets:
         TODO
         """
         languages = data[0][1:]
-        print(data[1:])
         page_info = {
             "title": title,
             "content": [{
