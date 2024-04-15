@@ -52,13 +52,15 @@ class Sheets:
         """
         languages = data[0][1:]
         page_info = {
-            "title": title,
+            "title": {
+                languages[i] : data[1][1+i] for i in range(len(languages))
+            },
             "content": [{
-                "content-type": data[1:][row_i][0],
+                "content-type": data[2:][row_i][0],
                 "content": drive.copy_content_and_download(
-                    languages, data[1:][row_i], title, row_i
+                    languages, data[2:][row_i], title, row_i
                 )
-            } for row_i in range(len(data[1:]))]
+            } for row_i in range(len(data[2:]))]
         }
         return page_info
 
@@ -87,6 +89,11 @@ class Sheets:
             data = self.get_values(spreadsheet_id, f"{sheet}!1:{MAX_ROWS}")
             if data[0][1:] != languages:
                 print("Provided sheet doesn't include all 'Languages")
+                return False
+
+            # Make sure every page has a title in every language (do we want to require this?)
+            if len(data[1][1:]) != len(languages):
+                print("Provided sheet doesn't include a title in all languages")
                 return False
 
             json_data['pages'].append(
