@@ -1,6 +1,5 @@
 import io
 import os
-import json
 
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
@@ -8,6 +7,9 @@ from googleapiclient.errors import HttpError
 
 from src.constants import (
     DOWNLOADS_DIR, DOWNLOADABLE, ALT_CONTENT, UPDATE_DIR
+)
+from src.exceptions import (
+    ImproperFormat, InvalidCredentials
 )
 
 
@@ -87,11 +89,20 @@ class Drive:
                     [link, follow] = (row[1 + i] + ' ').split(' ', 1)
                     id = Drive.get_id_from_link(link)
 
-                    name = self.get_file_name(id)
-                    file_path = os.path.join(
-                        path, f"{row_i+1}-{languages[i]}-{name}"
-                    )
-                    self.download_file(id, file_path)
+                    try:
+                        name = self.get_file_name(id)
+                        file_path = os.path.join(
+                            path, f"{row_i+1}-{languages[i]}-{name}"
+                        )
+                        self.download_file(id, file_path)
+                    except HttpError as e:
+                        error_content = e.content.decode("utf-8")
+                        if "Invalid Credentials" in error_content:
+                            raise InvalidCredentials(f"No download permissions for link: {row[1 + i]}")
+                        elif "File not found" in error_content:
+                            raise ImproperFormat(f"Invalid file link: {row[1 + i]}")
+                        else:
+                            raise e
 
                     if row[0] in ALT_CONTENT:
                         # Handle alt text
