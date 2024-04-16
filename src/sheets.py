@@ -1,10 +1,12 @@
+import os
+import shutil
 import json
 
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 from src.constants import (
-    SKIPPED_SHEETS, MAX_ROWS, PARSED_JSON
+    SKIPPED_SHEETS, MAX_ROWS, PARSED_JSON, DOWNLOADS_DIR, UPDATE_DIR
 )
 
 
@@ -103,3 +105,8 @@ class Sheets:
         # 4. Save to file
         with open(PARSED_JSON, 'w') as f:
             json.dump(json_data, f)
+
+        # 5. Rename update to downloads
+        shutil.rmtree(DOWNLOADS_DIR)
+        os.rename(UPDATE_DIR, DOWNLOADS_DIR)
+        return True

@@ -7,7 +7,7 @@ from googleapiclient.http import MediaIoBaseDownload
 from googleapiclient.errors import HttpError
 
 from src.constants import (
-    DOWNLOADS_DIR, DOWNLOADABLE, ALT_CONTENT
+    DOWNLOADS_DIR, DOWNLOADABLE, ALT_CONTENT, UPDATE_DIR
 )
 
 
@@ -30,7 +30,6 @@ class Drive:
         Returns the file name for the provided 'file_id'
         Throws HttpError if error occurs on fetch
         """
-
         file_metadata = self.service.files().get(
             fileId=file_id, fields='name'
         ).execute()
@@ -80,7 +79,7 @@ class Drive:
             if 1 + i < len(row):
                 if row[0] in DOWNLOADABLE:
                     # Make specific subfolder for this page
-                    path = os.path.join(DOWNLOADS_DIR, title)
+                    path = os.path.join(UPDATE_DIR, title)
                     if not os.path.exists(path):
                         os.makedirs(path)
 
