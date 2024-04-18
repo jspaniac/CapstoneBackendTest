@@ -12,16 +12,12 @@ from src.constants import (
 
 
 def load_credentials(scopes):
-    # print(type(os.environ.get(ENVIRONMENT_API_KEY)))
-    # print(os.environ.get(ENVIRONMENT_API_KEY) + " ")
-    # credentials_dict = json.loads(
-    #     os.environ.get(ENVIRONMENT_API_KEY)
-    # )
-    # print(type(credentials_dict))
-    # print(credentials_dict)
+    credentials_dict = json.loads(json.loads(
+        os.environ.get(ENVIRONMENT_API_KEY)
+    ))
 
     return service_account.Credentials.from_service_account_info(
-        os.environ.get(ENVIRONMENT_API_KEY),
+        credentials_dict,
         scopes=scopes
     )
 
