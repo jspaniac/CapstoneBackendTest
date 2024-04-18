@@ -12,6 +12,7 @@ from src.constants import (
 
 
 def load_credentials(scopes):
+    print(os.environ.get(ENVIRONMENT_API_KEY))
     credentials_dict = json.loads(
         os.environ.get(ENVIRONMENT_API_KEY)
     )
