@@ -32,6 +32,7 @@ jobs:
       env:
         SHEETS_API: ${{ secrets.SHEETS_API_TOKEN }}        
       run: |
+        cat $SHEETS_API
         python3 main.py
     - name: Commit files  # transfer the new html files back into the repository
       run: |
