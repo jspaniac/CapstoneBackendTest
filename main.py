@@ -15,6 +15,7 @@ def load_credentials(scopes):
     credentials_dict = json.loads(
         os.environ.get(ENVIRONMENT_API_KEY)
     )
+    print(credentials_dict)
 
     return service_account.Credentials.from_service_account_info(
         credentials_dict,
